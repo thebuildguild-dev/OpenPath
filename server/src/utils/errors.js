@@ -23,10 +23,10 @@ export class GitHubError extends AppError {
   }
 }
 
-export class GeminiError extends AppError {
+export class GroqError extends AppError {
   constructor(message, details = null) {
-    super(message, 'GEMINI_ERROR', 502);
-    this.name = 'GeminiError';
+    super(message, 'GROQ_ERROR', 502);
+    this.name = 'GroqError';
     this.details = details;
   }
 }

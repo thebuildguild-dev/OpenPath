@@ -1,7 +1,7 @@
-import { generateJsonSafe } from './gemini.service.js';
+import { generateJsonSafe } from './ai.service.js';
 
 /**
- * Build a template-based PR draft when Gemini is unavailable.
+ * Build a template-based PR draft when AI generation is unavailable.
  */
 function buildTemplatePrDraft(repo, issue, patchPlan, testingChecklist) {
   const repoName = repo?.fullName || repo?.name || 'the repository';
@@ -52,7 +52,7 @@ A few reminders:
 }
 
 /**
- * Build the Gemini prompt for PR draft generation.
+ * Build the AI prompt for PR draft generation.
  */
 function buildPrDraftPrompt(repo, issue, patchPlan, testingChecklist) {
   return `You are an expert open-source contributor helping write a professional Pull Request.
@@ -77,18 +77,16 @@ Generate a JSON response ONLY (no markdown, no explanation outside JSON) with EX
 }
 
 /**
- * Generate a PR draft using Gemini or fall back to a template.
+ * Generate a PR draft using Groq or fall back to a template.
  */
 export async function generatePrDraft(repo, issue, patchPlan, testingChecklist) {
   const fallback = buildTemplatePrDraft(repo, issue, patchPlan, testingChecklist);
 
-  if (!process.env.GEMINI_API_KEY) {
-    console.warn('[PrDraft] GEMINI_API_KEY not set — using template fallback');
-    return { ...fallback, fromFallback: true };
-  }
-
   const prompt = buildPrDraftPrompt(repo, issue, patchPlan, testingChecklist);
-  const { data, fromFallback } = await generateJsonSafe(prompt, fallback);
+  const { data, fromFallback } = await generateJsonSafe(prompt, fallback, 30000, {
+    systemPrompt:
+      'You are OpenPath, an AI mentor that writes safe, concise, high-quality pull request drafts for open-source contributors.',
+  });
 
   return { ...data, fromFallback };
 }

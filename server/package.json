@@ -9,11 +9,11 @@
     "dev": "nodemon server.js"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.21.0",
     "axios": "^1.7.9",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "groq-sdk": "^0.30.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"
@@ -23,6 +23,9 @@
   },
   "nodemonConfig": {
     "ext": "js,json",
-    "ignore": ["node_modules/", "src/data/"]
+    "ignore": [
+      "node_modules/",
+      "src/data/"
+    ]
   }
 }

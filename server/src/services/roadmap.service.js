@@ -1,8 +1,8 @@
-import { generateJsonSafe } from './gemini.service.js';
+import { generateJsonSafe } from './ai.service.js';
 import { predictLikelyFiles } from './filePredictor.service.js';
 
 /**
- * Build a rule-based fallback roadmap when Gemini is unavailable.
+ * Build a rule-based fallback roadmap when AI generation is unavailable.
  */
 function buildFallbackRoadmap(repo, contributor, issues, setupAnalysis) {
   const best = issues[0] || null;
@@ -112,7 +112,7 @@ function buildFallbackPrDraft(repo, issue, testingChecklist) {
 }
 
 /**
- * Build the Gemini prompt for roadmap generation.
+ * Build the AI prompt for roadmap generation.
  */
 function buildRoadmapPrompt(repo, contributor, issues, setupAnalysis) {
   return `You are an expert open-source contribution mentor. Analyze this GitHub repository and generate a personalized contribution roadmap for a developer.
@@ -182,22 +182,20 @@ Generate a JSON response ONLY (no markdown, no explanation outside JSON) with EX
 
 /**
  * Generate a full contribution roadmap.
- * Uses Gemini if available, falls back to rule-based.
+ * Uses Groq if available, falls back to rule-based.
  */
 export async function generateRoadmap(repo, contributor, issues, setupAnalysis) {
   const fallback = buildFallbackRoadmap(repo, contributor, issues, setupAnalysis);
 
-  if (!process.env.GEMINI_API_KEY) {
-    console.warn('[Roadmap] GEMINI_API_KEY not set — using rule-based fallback');
-    return fallback;
-  }
-
   const prompt = buildRoadmapPrompt(repo, contributor, issues, setupAnalysis);
-  const { data, fromFallback } = await generateJsonSafe(prompt, fallback);
+  const { data, fromFallback } = await generateJsonSafe(prompt, fallback, 30000, {
+    systemPrompt:
+      'You are OpenPath, an AI mentor that analyzes GitHub repositories and creates safe contribution roadmaps.',
+  });
 
   if (fromFallback) return fallback;
 
-  // Merge Gemini result with best issue scores from our scoring service
+  // Merge AI result with best issue scores from our scoring service
   const best = issues.find((i) => i.number === data.bestIssue?.number) || issues[0];
   return {
     ...data,
