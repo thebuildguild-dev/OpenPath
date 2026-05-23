@@ -175,7 +175,7 @@ components:
     typography: "{typography.body-sm}"
     padding: "{spacing.3xl} {spacing.xl}"
 
-  # ─── Examples (illustrative) — auto-derived; resolve any TO_FILL markers below ───
+  #  Examples (illustrative) — auto-derived; resolve any TO_FILL markers below 
   ex-pricing-tier:
     description: "Default Pricing tier card. Re-uses feature-card chrome with brand canvas-soft surface."
     backgroundColor: "{colors.canvas-soft}"

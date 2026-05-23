@@ -17,7 +17,7 @@ import { successResponse, errorResponse } from '../utils/response.js';
 export async function analyzeRepo(req, res) {
   const { repoUrl, contributor, options = {} } = req.body;
 
-  // ── 1. Validate input ──────────────────────────────────────────────────────
+  //  1. Validate input 
   const validationError = validateAnalyzeBody({ repoUrl, contributor });
   if (validationError) {
     return errorResponse(res, validationError, 'VALIDATION_ERROR', null, 400);
@@ -29,17 +29,17 @@ export async function analyzeRepo(req, res) {
   const includeSetupAnalysis = options.includeSetupAnalysis !== false;
 
   try {
-    // ── 2. Parse owner/repo ──────────────────────────────────────────────────
+    //  2. Parse owner/repo 
     const { owner, repo } = parseRepoUrl(repoUrl);
 
-    // ── 3. Fetch repo metadata and top-level contents in parallel ─────────────
+    //  3. Fetch repo metadata and top-level contents in parallel 
     const [repoMeta, topLevelContents, languages] = await Promise.all([
       getRepoMetadata(owner, repo),
       getTopLevelContents(owner, repo),
       getRepoLanguages(owner, repo),
     ]);
 
-    // ── 4. Determine which optional files exist ────────────────────────────
+    //  4. Determine which optional files exist 
     const fileNames = topLevelContents.map((f) => f.name.toLowerCase());
     const hasPackageJson = fileNames.includes('package.json');
     const envExampleExists =
@@ -48,14 +48,14 @@ export async function analyzeRepo(req, res) {
       n.toLowerCase().startsWith('contributing')
     );
 
-    // ── 5. Fetch README, package.json, issues in parallel ─────────────────
+    //  5. Fetch README, package.json, issues in parallel 
     const [readme, packageJsonRaw, rawIssues] = await Promise.all([
       getReadme(owner, repo),
       hasPackageJson ? getFileIfExists(owner, repo, 'package.json') : Promise.resolve(null),
       getRepoIssues(owner, repo, { state: 'open', limit: maxIssues }),
     ]);
 
-    // ── 6. Parse package.json safely ──────────────────────────────────────
+    //  6. Parse package.json safely 
     let packageJson = null;
     if (packageJsonRaw) {
       try {
@@ -65,10 +65,10 @@ export async function analyzeRepo(req, res) {
       }
     }
 
-    // ── 7. Score issues ───────────────────────────────────────────────────
+    //  7. Score issues 
     const scoredIssues = scoreIssues(rawIssues, contributor);
 
-    // ── 8. Predict likely files for top 5 issues ─────────────────────────
+    //  8. Predict likely files for top 5 issues 
     const top5 = scoredIssues.slice(0, 5);
     const filePredictions = predictForIssues(top5);
 
@@ -78,12 +78,12 @@ export async function analyzeRepo(req, res) {
       likelyFiles: filePredictions[issue.number] || [],
     }));
 
-    // ── 9. Analyze setup ──────────────────────────────────────────────────
+    //  9. Analyze setup 
     const setupAnalysis = includeSetupAnalysis
       ? analyzeSetup({ readme, packageJson, envExampleExists, contributingExists, topLevelFiles: topLevelContents })
       : null;
 
-    // ── 10. Generate AI roadmap (top 5 scored issues) ────────────────────
+    //  10. Generate AI roadmap (top 5 scored issues) 
     let overallGuidance = null;
     if (includeAiRoadmap && top5.length > 0) {
       overallGuidance = await generateRoadmap(repoMeta, contributor, top5, setupAnalysis);
@@ -102,7 +102,7 @@ export async function analyzeRepo(req, res) {
       }
     }
 
-    // ── 11. Build repo summary ────────────────────────────────────────────
+    //  11. Build repo summary 
     const repoSummary = {
       totalFilesScanned: topLevelContents.length,
       issuesFetched: rawIssues.length,
@@ -113,7 +113,7 @@ export async function analyzeRepo(req, res) {
       readmeFound: Boolean(readme),
     };
 
-    // ── 12. Return combined result ────────────────────────────────────────
+    //  12. Return combined result 
     return successResponse(
       res,
       {

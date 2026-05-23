@@ -3,7 +3,7 @@
  * All individual scores are 0-100. finalScore is normalised to 0-100.
  */
 
-// ─── Keyword tables ──────────────────────────────────────────────────────────
+//  Keyword tables 
 
 const HIGH_RISK_KEYWORDS = [
   'auth', 'authentication', 'authorization', 'security', 'token', 'oauth',
@@ -39,7 +39,7 @@ const NEGATIVE_SIGNALS = [
   'won\'t fix', 'needs investigation', 'complex', 'breaking change',
 ];
 
-// ─── Skill keyword mapping ────────────────────────────────────────────────────
+//  Skill keyword mapping 
 
 const SKILL_KEYWORD_MAP = {
   react: ['react', 'jsx', 'component', 'hook', 'context', 'redux', 'recoil', 'zustand'],
@@ -57,7 +57,7 @@ const SKILL_KEYWORD_MAP = {
   devops: ['docker', 'kubernetes', 'ci', 'cd', 'github actions', 'deploy'],
 };
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+//  Helpers 
 
 function textOf(issue) {
   return `${issue.title || ''} ${issue.body || ''} ${(issue.labels || []).join(' ')}`.toLowerCase();
@@ -80,7 +80,7 @@ function daysSince(dateStr) {
   return Math.floor((Date.now() - new Date(dateStr).getTime()) / 86400000);
 }
 
-// ─── Individual scorers ───────────────────────────────────────────────────────
+//  Individual scorers 
 
 function scoreSkillMatch(issue, contributor) {
   const skills = (contributor.skills || []).map((s) => s.toLowerCase());
@@ -198,7 +198,7 @@ function scoreConfidence(issue) {
   return clamp(score);
 }
 
-// ─── Difficulty / risk classification ────────────────────────────────────────
+//  Difficulty / risk classification 
 
 function classifyDifficulty(finalScore) {
   if (finalScore <= 40) return 'beginner';
@@ -212,7 +212,7 @@ function classifyRiskLevel(riskScore) {
   return 'high';
 }
 
-// ─── Main export ──────────────────────────────────────────────────────────────
+//  Main export 
 
 /**
  * Score a single issue for a given contributor.
