@@ -7,7 +7,7 @@
 import { generateJsonSafe } from '../ai.service.js';
 import { buildArchitectureMapperPrompt } from '../../prompts/architectureMapper.prompt.js';
 
-// ─── Rules ─────────────────────────────────────────────────────────────────
+//  Rules 
 
 const FRONTEND_FOLDERS = ['src', 'components', 'pages', 'app', 'views', 'client', 'frontend', 'ui', 'styles', 'assets', 'static', 'public', 'stories'];
 const BACKEND_FOLDERS = ['server', 'api', 'routes', 'controllers', 'services', 'handlers', 'middleware', 'backend', 'cmd', 'pkg', 'internal', 'lib'];
@@ -61,7 +61,7 @@ function buildRiskMap(topLevelContents) {
   return riskMap;
 }
 
-// ─── Agent ─────────────────────────────────────────────────────────────────
+//  Agent 
 
 export async function run({ topLevelContents, packageJson, readme, detectedStack }) {
   const frontendFolders = matchFolders(topLevelContents, FRONTEND_FOLDERS);

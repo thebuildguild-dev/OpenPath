@@ -19,7 +19,7 @@ const EXAMPLE_REPOS = [
   'microsoft/vscode',
 ];
 
-// ─── Analyzing screen ──────────────────────────────────────────────────────
+//  Analyzing screen 
 function AnalyzingScreen({ repoUrl }: { repoUrl: string }) {
   const repoName = repoUrl.replace('https://github.com/', '');
   const steps = [
@@ -74,7 +74,7 @@ function AnalyzingScreen({ repoUrl }: { repoUrl: string }) {
   );
 }
 
-// ─── Error screen ──────────────────────────────────────────────────────────
+//  Error screen 
 function ErrorScreen({ message, onRetry }: { message: string; onRetry: () => void }) {
   return (
     <div className="min-h-screen bg-canvas flex items-center justify-center px-6">
@@ -93,7 +93,7 @@ function ErrorScreen({ message, onRetry }: { message: string; onRetry: () => voi
   );
 }
 
-// ─── Main page ─────────────────────────────────────────────────────────────
+//  Main page 
 export default function AnalyzePage() {
   const navigate = useNavigate();
   const [view, setView] = useState<FlowView>('form');

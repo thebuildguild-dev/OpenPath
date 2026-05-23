@@ -11,7 +11,7 @@ import { generateJsonSafe } from '../ai.service.js';
 import { detectStack } from '../predictors/stackDetector.service.js';
 import { buildRepoScoutPrompt } from '../../prompts/repoScout.prompt.js';
 
-// ─── Rule-based project type detection ────────────────────────────────────
+//  Rule-based project type detection 
 
 const PROJECT_TYPE_RULES = [
   { check: (pkg) => !!pkg?.dependencies?.next || !!pkg?.devDependencies?.next, type: 'Next.js web app' },
@@ -77,7 +77,7 @@ function detectImportantFolders(topLevelContents, projectType) {
     .map((f) => f.name);
 }
 
-// ─── Agent ─────────────────────────────────────────────────────────────────
+//  Agent 
 
 /**
  * Run the Repo Scout Agent.

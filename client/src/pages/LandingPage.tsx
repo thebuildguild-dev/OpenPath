@@ -44,7 +44,7 @@ export default function LandingPage() {
       <NavBar />
 
       <main className="flex-1">
-        {/* ── Hero ─────────────────────────────────────────────────── */}
+        {/*  Hero  */}
         <section className="max-w-6xl mx-auto px-6 pt-24 pb-20">
           <p className="eyebrow mb-6 animate-fade-in">
             AI-Powered Contribution Roadmap
@@ -79,7 +79,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ── Proof strip ──────────────────────────────────────────── */}
+        {/*  Proof strip  */}
         <div className="border-t border-hairline" />
         <section className="max-w-6xl mx-auto px-6 py-10">
           <div className="flex flex-wrap gap-x-12 gap-y-6">
@@ -97,7 +97,7 @@ export default function LandingPage() {
         </section>
         <div className="border-t border-hairline" />
 
-        {/* ── Features ─────────────────────────────────────────────── */}
+        {/*  Features  */}
         <section className="max-w-6xl mx-auto px-6 py-20">
           <p className="eyebrow mb-3">What you get</p>
           <h2 className="display-md text-ink mb-12 max-w-xl">
@@ -124,7 +124,7 @@ export default function LandingPage() {
 
         <div className="border-t border-hairline" />
 
-        {/* ── How it works ─────────────────────────────────────────── */}
+        {/*  How it works  */}
         <section className="max-w-6xl mx-auto px-6 py-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             <div>
@@ -159,7 +159,7 @@ export default function LandingPage() {
 
         <div className="border-t border-hairline" />
 
-        {/* ── Bottom CTA ───────────────────────────────────────────── */}
+        {/*  Bottom CTA  */}
         <section className="max-w-6xl mx-auto px-6 py-24 text-center">
           <p className="eyebrow mb-5">Open Source for Everyone</p>
           <h2 className="display-md text-ink mb-5">

@@ -7,7 +7,7 @@ import { scoreRisk, classifyRiskLevel } from './riskScoring.service.js';
 import { scoreStaleness } from './stalenessScoring.service.js';
 import { scoreConfidence } from './confidenceScoring.service.js';
 
-// ─── Skill keyword map ─────────────────────────────────────────────────────
+//  Skill keyword map 
 
 const SKILL_KEYWORD_MAP = {
   react: ['react', 'jsx', 'component', 'hook', 'context', 'redux', 'recoil', 'zustand', 'ui'],
@@ -43,7 +43,7 @@ const NEGATIVE_SIGNALS = [
   "won't fix", 'needs investigation', 'complex', 'breaking change',
 ];
 
-// ─── Helpers ───────────────────────────────────────────────────────────────
+//  Helpers 
 
 function clamp(val, min = 0, max = 100) {
   return Math.max(min, Math.min(max, Math.round(val)));
@@ -57,7 +57,7 @@ function countMatches(text, keywords) {
   return keywords.reduce((acc, kw) => acc + (text.includes(kw) ? 1 : 0), 0);
 }
 
-// ─── Individual scorers ────────────────────────────────────────────────────
+//  Individual scorers 
 
 function scoreSkillMatch(issue, contributor) {
   const skills = (contributor.skills || []).map((s) => s.toLowerCase());
@@ -137,7 +137,7 @@ function classifyDifficulty(score) {
   return 'advanced';
 }
 
-// ─── Exports ───────────────────────────────────────────────────────────────
+//  Exports 
 
 /**
  * Score a single issue for a given contributor.

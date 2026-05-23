@@ -8,7 +8,7 @@
 import { generateJsonSafe } from '../ai.service.js';
 import { buildPathPlannerPrompt } from '../../prompts/pathPlanner.prompt.js';
 
-// ─── Ranking formula ────────────────────────────────────────────────────────
+//  Ranking formula 
 
 function computeFinalScore(issue) {
   const s = issue.scores || {};
@@ -71,7 +71,7 @@ function buildFallbackPlanning(ranked, contributor) {
   };
 }
 
-// ─── Agent ──────────────────────────────────────────────────────────────────
+//  Agent 
 
 export async function run({ repoScout, architecture, setupAnalysis, scoredIssues, contributor }) {
   const ranked = rankIssues(scoredIssues, contributor);

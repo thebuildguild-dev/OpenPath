@@ -44,12 +44,12 @@
 }
 
 @layer components {
-  /* ── Eyebrow label ─────────────────────────────────────── */
+  /*  Eyebrow label  */
   .eyebrow {
     @apply font-mono text-xs uppercase tracking-[0.1em] text-body-mid;
   }
 
-  /* ── Buttons ────────────────────────────────────────────── */
+  /*  Buttons  */
   .btn-outline {
     @apply inline-flex items-center gap-2 px-4 py-2 rounded-full bg-canvas-soft text-ink text-sm leading-5 transition-all duration-200 hover:bg-canvas-mid cursor-pointer;
   }
@@ -62,7 +62,7 @@
     @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-canvas-soft text-ink text-xs leading-4 transition-all duration-200 hover:bg-canvas-mid cursor-pointer;
   }
 
-  /* ── Cards — background only, no border ────────────────── */
+  /*  Cards — background only, no border  */
   .card {
     @apply bg-canvas-card rounded-[10px] p-6;
   }
@@ -71,12 +71,12 @@
     @apply bg-canvas-card rounded-[10px] p-4;
   }
 
-  /* ── Form inputs — borderless ───────────────────────────── */
+  /*  Form inputs — borderless  */
   .text-input {
     @apply w-full bg-canvas-soft rounded-[8px] px-4 py-3 text-ink text-sm placeholder:text-body-mid outline-none transition-colors focus:ring-1 focus:ring-canvas-mid;
   }
 
-  /* ── Typography scale ───────────────────────────────────── */
+  /*  Typography scale  */
   .display-xl {
     font-size: clamp(48px, 8vw, 96px);
     font-weight: 400;
@@ -105,7 +105,7 @@
     letter-spacing: -0.02em;
   }
 
-  /* ── Gradient ───────────────────────────────────────────── */
+  /*  Gradient  */
   .gradient-text {
     background: linear-gradient(135deg, #ff7a17 0%, #ffc285 40%, #c4b5fd 70%, #7c3aed 100%);
     -webkit-background-clip: text;
@@ -113,17 +113,17 @@
     background-clip: text;
   }
 
-  /* ── Structural dividers (kept as hairlines) ────────────── */
+  /*  Structural dividers (kept as hairlines)  */
   .hairline-divider {
     @apply border-t border-hairline;
   }
 
-  /* ── Score ring colors ──────────────────────────────────── */
+  /*  Score ring colors  */
   .score-ring-high   { stroke: #ff7a17; }
   .score-ring-medium { stroke: #ffc285; }
   .score-ring-low    { stroke: #7d8187; }
 
-  /* ── Inner data rows — no border ────────────────────────── */
+  /*  Inner data rows — no border  */
   .data-row {
     @apply bg-canvas-soft rounded-[6px] px-3 py-2.5;
   }

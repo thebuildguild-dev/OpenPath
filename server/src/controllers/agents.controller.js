@@ -22,7 +22,7 @@ import * as codeRiskMapperAgent from '../services/agents/codeRiskMapper.agent.js
 import * as pathPlannerAgent from '../services/agents/pathPlanner.agent.js';
 import { scoreIssues } from '../services/scoring/issueScoring.service.js';
 
-// ─── Helper ──────────────────────────────────────────────────────────────────
+//  Helper 
 
 async function fetchBaseRepoData(repoUrl) {
   const { owner, repo } = parseRepoUrl(repoUrl);
@@ -44,7 +44,7 @@ async function fetchBaseRepoData(repoUrl) {
   return { owner, repo, repoMeta, topLevelContents, languages, readme, packageJson };
 }
 
-// ─── POST /api/agents/repo-scout ────────────────────────────────────────────
+//  POST /api/agents/repo-scout 
 
 export async function runRepoScout(req, res) {
   const { repoUrl } = req.body;
@@ -58,7 +58,7 @@ export async function runRepoScout(req, res) {
   }
 }
 
-// ─── POST /api/agents/architecture ──────────────────────────────────────────
+//  POST /api/agents/architecture 
 
 export async function runArchitectureMapper(req, res) {
   const { repoUrl } = req.body;
@@ -72,7 +72,7 @@ export async function runArchitectureMapper(req, res) {
   }
 }
 
-// ─── POST /api/agents/issues ─────────────────────────────────────────────────
+//  POST /api/agents/issues 
 
 export async function runIssueMiner(req, res) {
   const { repoUrl, limit = 20 } = req.body;
@@ -87,7 +87,7 @@ export async function runIssueMiner(req, res) {
   }
 }
 
-// ─── POST /api/agents/setup ──────────────────────────────────────────────────
+//  POST /api/agents/setup 
 
 export async function runSetupInspector(req, res) {
   const { repoUrl } = req.body;
@@ -108,7 +108,7 @@ export async function runSetupInspector(req, res) {
   }
 }
 
-// ─── POST /api/agents/risk ────────────────────────────────────────────────────
+//  POST /api/agents/risk 
 
 export async function runRiskMapper(req, res) {
   const { repoUrl } = req.body;
@@ -122,7 +122,7 @@ export async function runRiskMapper(req, res) {
   }
 }
 
-// ─── POST /api/agents/path ────────────────────────────────────────────────────
+//  POST /api/agents/path 
 
 export async function runPathPlanner(req, res) {
   const { repoUrl, contributor } = req.body;

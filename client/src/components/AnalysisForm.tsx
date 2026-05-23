@@ -187,7 +187,7 @@ export default function AnalysisForm({ onSubmit, loading }: AnalysisFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-7">
-      {/* ── Repo URL ─────────────────────────────────────── */}
+      {/*  Repo URL  */}
       <div>
         <label className="eyebrow block mb-2">GitHub Repository URL</label>
         <div className="relative">
@@ -211,7 +211,7 @@ export default function AnalysisForm({ onSubmit, loading }: AnalysisFormProps) {
         {urlError && <p className="text-red-400 text-xs mt-1.5">{urlError}</p>}
       </div>
 
-      {/* ── Name (optional) ──────────────────────────────── */}
+      {/*  Name (optional)  */}
       <div>
         <label className="eyebrow block mb-2">
           Your Name{" "}
@@ -227,13 +227,13 @@ export default function AnalysisForm({ onSubmit, loading }: AnalysisFormProps) {
         />
       </div>
 
-      {/* ── Level + Goal ─────────────────────────────────── */}
+      {/*  Level + Goal  */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <SelectField label="Experience Level" value={level} options={LEVEL_OPTIONS} onChange={setLevel} />
         <SelectField label="Your Goal"        value={goal}  options={GOAL_OPTIONS}  onChange={setGoal}  />
       </div>
 
-      {/* ── Skills ───────────────────────────────────────── */}
+      {/*  Skills  */}
       <div>
         <div className="flex items-center justify-between mb-3">
           <label className="eyebrow">Your Skills</label>
@@ -311,7 +311,7 @@ export default function AnalysisForm({ onSubmit, loading }: AnalysisFormProps) {
         </div>
       </div>
 
-      {/* ── Contribution type ────────────────────────────── */}
+      {/*  Contribution type  */}
       <div>
         <label className="eyebrow block mb-3">
           Preferred Contribution Type
@@ -339,7 +339,7 @@ export default function AnalysisForm({ onSubmit, loading }: AnalysisFormProps) {
         </div>
       </div>
 
-      {/* ── Submit ───────────────────────────────────────── */}
+      {/*  Submit  */}
       <button
         type="submit"
         disabled={loading}
