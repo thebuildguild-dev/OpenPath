@@ -10,6 +10,7 @@ import roadmapRoutes from './src/routes/roadmap.routes.js';
 import setupRoutes from './src/routes/setup.routes.js';
 import prDraftRoutes from './src/routes/prDraft.routes.js';
 import demoRoutes from './src/routes/demo.routes.js';
+import agentsRoutes from './src/routes/agents.routes.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -36,6 +37,7 @@ app.use('/api', roadmapRoutes);
 app.use('/api', setupRoutes);
 app.use('/api', prDraftRoutes);
 app.use('/api', demoRoutes);
+app.use('/api', agentsRoutes);
 
 // 404 handler
 app.use((_req, res) => {
