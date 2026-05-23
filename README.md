@@ -1,2 +1,5 @@
 # OpenPath
+<<<<<<< HEAD
 # OpenPath
+=======
+>>>>>>> server
