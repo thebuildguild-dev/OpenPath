@@ -15,7 +15,6 @@ export default function RepoHeader({ repo, repoSummary }: RepoHeaderProps) {
   return (
     <section className="border-b border-hairline">
       <div className="max-w-6xl mx-auto px-6 py-12">
-        {/* Eyebrow */}
         <p className="eyebrow mb-4">Repository</p>
 
         {/* Title row */}
@@ -37,19 +36,19 @@ export default function RepoHeader({ repo, repoSummary }: RepoHeaderProps) {
 
         {/* Stats row */}
         <div className="flex flex-wrap items-center gap-4 mt-6">
-          <StatChip icon={<Star size={13} />} label={formatNumber(repo.stars)} title="Stars" />
-          <StatChip icon={<GitFork size={13} />} label={formatNumber(repo.forks)} title="Forks" />
-          <StatChip icon={<CircleDot size={13} />} label={String(repo.openIssues)} title="Open Issues" />
-          <StatChip icon={<GitBranch size={13} />} label={repo.defaultBranch} title="Default Branch" />
+          <StatChip icon={<Star size={13} />}       label={formatNumber(repo.stars)}  title="Stars" />
+          <StatChip icon={<GitFork size={13} />}    label={formatNumber(repo.forks)}  title="Forks" />
+          <StatChip icon={<CircleDot size={13} />}  label={String(repo.openIssues)}   title="Open Issues" />
+          <StatChip icon={<GitBranch size={13} />}  label={repo.defaultBranch}        title="Default Branch" />
 
           <div className="h-4 w-px bg-hairline hidden sm:block" />
 
-          {/* Languages */}
+          {/* Language chips — background only */}
           <div className="flex flex-wrap gap-2">
             {repo.languages.slice(0, 4).map((lang) => (
               <span
                 key={lang}
-                className="font-mono text-[11px] uppercase tracking-[0.08em] text-body-mid px-2.5 py-1 rounded-full border border-hairline bg-canvas-soft"
+                className="font-mono text-[11px] uppercase tracking-[0.08em] text-body-mid px-2.5 py-1 rounded-full bg-canvas-soft"
               >
                 {lang}
               </span>
@@ -63,7 +62,7 @@ export default function RepoHeader({ repo, repoSummary }: RepoHeaderProps) {
             {repo.topics.map((topic) => (
               <span
                 key={topic}
-                className="text-xs text-accent-breeze bg-accent-midnight/60 border border-accent-breeze/20 px-2.5 py-1 rounded-full"
+                className="text-xs text-accent-breeze bg-accent-midnight/60 px-2.5 py-1 rounded-full"
               >
                 {topic}
               </span>
@@ -71,35 +70,29 @@ export default function RepoHeader({ repo, repoSummary }: RepoHeaderProps) {
           </div>
         )}
 
-        {/* Project summary */}
-        <div className="mt-6 p-4 bg-canvas-soft rounded-[8px] border border-hairline">
+        {/* AI summary */}
+        <div className="mt-6 p-4 bg-canvas-soft rounded-[8px]">
           <p className="eyebrow mb-2">AI Summary</p>
           <p className="text-body text-sm leading-6">{repoSummary.summary}</p>
-          <div className="flex flex-wrap gap-3 mt-3">
-            {repoSummary.importantFolders.map((folder) => (
-              <code
-                key={folder}
-                className="font-mono text-[11px] text-accent-sunset-soft bg-canvas-mid/50 px-2 py-0.5 rounded"
-              >
-                {folder}/
-              </code>
-            ))}
-          </div>
+          {repoSummary.importantFolders.length > 0 && (
+            <div className="flex flex-wrap gap-3 mt-3">
+              {repoSummary.importantFolders.map((folder) => (
+                <code
+                  key={folder}
+                  className="font-mono text-[11px] text-accent-sunset-soft bg-canvas-mid/50 px-2 py-0.5 rounded"
+                >
+                  {folder}/
+                </code>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>
   );
 }
 
-function StatChip({
-  icon,
-  label,
-  title,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  title: string;
-}) {
+function StatChip({ icon, label, title }: { icon: React.ReactNode; label: string; title: string }) {
   return (
     <div className="flex items-center gap-1.5" title={title}>
       <span className="text-body-mid">{icon}</span>

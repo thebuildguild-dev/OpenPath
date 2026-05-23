@@ -1,190 +1,181 @@
-import { ArrowRight, Zap, GitBranch, Map } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, Zap, Map, GitBranch, CheckCircle } from 'lucide-react';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
-import AnalysisForm from '../components/AnalysisForm';
-import type { AnalysisRequest } from '../types';
-
-interface LandingPageProps {
-  onSubmit: (req: AnalysisRequest) => void;
-  loading: boolean;
-}
 
 const FEATURES = [
   {
-    icon: <Zap size={16} className="text-accent-sunset" />,
+    icon: <Zap size={18} className="text-accent-sunset" />,
+    iconBg: 'bg-accent-sunset/10',
     title: 'Smart Issue Matching',
     desc: 'AI scores every open issue against your skills, experience level, and goal — surfacing the ones where you can actually succeed.',
   },
   {
-    icon: <Map size={16} className="text-accent-twilight" />,
+    icon: <Map size={18} className="text-accent-twilight" />,
+    iconBg: 'bg-accent-dusk/10',
     title: 'Step-by-Step Roadmap',
     desc: 'Patch strategy, likely files to edit, safe areas to touch, and a complete testing checklist — personalised to the issue.',
   },
   {
-    icon: <GitBranch size={16} className="text-accent-breeze" />,
+    icon: <GitBranch size={18} className="text-accent-breeze" />,
+    iconBg: 'bg-accent-breeze/10',
     title: 'PR Draft Ready',
     desc: 'Walk away with a ready-to-use PR title, description, and maintainer comment. No blank-page anxiety.',
   },
 ];
 
-const EXAMPLE_REPOS = [
-  'facebook/react',
-  'vercel/next.js',
-  'microsoft/vscode',
-  'tailwindlabs/tailwindcss',
-  'vitejs/vite',
-  'supabase/supabase',
+const STEPS = [
+  'Paste any public GitHub repository URL',
+  'Tell us your skills, level, and goal',
+  'AI analyses issues and the codebase',
+  'Get your personalised contribution roadmap',
 ];
 
-export default function LandingPage({ onSubmit, loading }: LandingPageProps) {
+const PROOF_STATS = [
+  { top: 'Issues ranked', bottom: 'by your skills' },
+  { top: 'File-level', bottom: 'guidance' },
+  { top: 'PR draft', bottom: 'included' },
+  { top: 'Risk score', bottom: 'per issue' },
+];
+
+export default function LandingPage() {
   return (
     <div className="min-h-screen flex flex-col bg-canvas">
       <NavBar />
 
       <main className="flex-1">
-        {/* Hero */}
-        <section className="max-w-6xl mx-auto px-6 pt-20 pb-16">
-          <div className="max-w-2xl">
-            <p className="eyebrow mb-6 animate-fade-in">
-              AI-Powered Contribution Roadmap
-            </p>
+        {/* ── Hero ─────────────────────────────────────────────────── */}
+        <section className="max-w-6xl mx-auto px-6 pt-24 pb-20">
+          <p className="eyebrow mb-6 animate-fade-in">
+            AI-Powered Contribution Roadmap
+          </p>
 
-            <h1 className="display-xl text-ink mb-6 animate-fade-up">
-              Find your path<br />
-              to{' '}
-              <span className="gradient-text">open source.</span>
-            </h1>
+          <h1 className="display-xl text-ink mb-7 animate-fade-up max-w-3xl">
+            Find your path<br />
+            to{' '}
+            <span className="gradient-text">open source.</span>
+          </h1>
 
-            <p className="text-body text-lg leading-7 mb-8 animate-fade-up animation-delay-100">
-              Paste any GitHub repository URL, tell us your skills and goals, and get
-              a personalised roadmap to your first merged PR — powered by AI.
-            </p>
+          <p className="text-body text-xl leading-8 mb-10 max-w-xl animate-fade-up animation-delay-100">
+            Paste any GitHub repo, tell us your skills, and get a personalised
+            roadmap to your first merged PR — powered by AI.
+          </p>
 
-            {/* Social proof-style stats */}
-            <div className="flex flex-wrap gap-6 mb-12 animate-fade-up animation-delay-200">
-              {[
-                ['Issues ranked', 'by your skills'],
-                ['File-level', 'guidance'],
-                ['PR draft', 'included'],
-              ].map(([a, b]) => (
-                <div key={a} className="flex flex-col">
-                  <span className="font-mono text-xs uppercase tracking-[0.1em] text-accent-sunset-soft">
-                    {a}
+          <div className="flex flex-wrap items-center gap-4 animate-fade-up animation-delay-200">
+            <Link
+              to="/analyze"
+              className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-ink text-canvas text-sm font-medium transition-all duration-200 hover:bg-ink-hover"
+            >
+              Get My Roadmap
+              <ArrowRight size={15} />
+            </Link>
+            <Link
+              to="/analyze"
+              className="inline-flex items-center gap-2 text-body-mid text-sm hover:text-ink transition-colors"
+            >
+              Try a demo repo
+              <ArrowRight size={13} />
+            </Link>
+          </div>
+        </section>
+
+        {/* ── Proof strip ──────────────────────────────────────────── */}
+        <div className="border-t border-hairline" />
+        <section className="max-w-6xl mx-auto px-6 py-10">
+          <div className="flex flex-wrap gap-x-12 gap-y-6">
+            {PROOF_STATS.map(({ top, bottom }) => (
+              <div key={top} className="flex flex-col">
+                <span className="font-mono text-xs uppercase tracking-[0.1em] text-accent-sunset-soft">
+                  {top}
+                </span>
+                <span className="font-mono text-xs uppercase tracking-[0.1em] text-body-mid">
+                  {bottom}
+                </span>
+              </div>
+            ))}
+          </div>
+        </section>
+        <div className="border-t border-hairline" />
+
+        {/* ── Features ─────────────────────────────────────────────── */}
+        <section className="max-w-6xl mx-auto px-6 py-20">
+          <p className="eyebrow mb-3">What you get</p>
+          <h2 className="display-md text-ink mb-12 max-w-xl">
+            Everything you need<br />for your first PR.
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {FEATURES.map((f) => (
+              <div
+                key={f.title}
+                className="bg-canvas-card rounded-[10px] p-6 flex flex-col gap-4"
+              >
+                <div className={`flex items-center justify-center w-10 h-10 rounded-[8px] ${f.iconBg} shrink-0`}>
+                  {f.icon}
+                </div>
+                <div>
+                  <h3 className="text-ink text-base font-medium mb-2">{f.title}</h3>
+                  <p className="text-body-mid text-sm leading-6">{f.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <div className="border-t border-hairline" />
+
+        {/* ── How it works ─────────────────────────────────────────── */}
+        <section className="max-w-6xl mx-auto px-6 py-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+            <div>
+              <p className="eyebrow mb-3">How it works</p>
+              <h2 className="display-md text-ink mb-8">
+                Four steps to<br />your first commit.
+              </h2>
+              <Link
+                to="/analyze"
+                className="inline-flex items-center gap-2.5 px-5 py-3 rounded-full bg-ink text-canvas text-sm font-medium transition-all duration-200 hover:bg-ink-hover"
+              >
+                Start now
+                <ArrowRight size={14} />
+              </Link>
+            </div>
+
+            <div className="space-y-0">
+              {STEPS.map((step, i) => (
+                <div key={step} className="flex items-start gap-5 py-5 border-b border-hairline last:border-b-0">
+                  <span className="font-mono text-[11px] text-accent-sunset w-6 shrink-0 mt-0.5">
+                    0{i + 1}
                   </span>
-                  <span className="font-mono text-xs uppercase tracking-[0.1em] text-body-mid">
-                    {b}
-                  </span>
+                  <div className="flex-1">
+                    <p className="text-body text-base leading-6">{step}</p>
+                  </div>
+                  <CheckCircle size={15} className="text-body-mid shrink-0 mt-0.5" />
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        <div className="hairline-divider" />
+        <div className="border-t border-hairline" />
 
-        {/* Form section */}
-        <section className="max-w-6xl mx-auto px-6 py-16">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-            {/* Form */}
-            <div className="animate-fade-up animation-delay-300">
-              <p className="eyebrow mb-3">Analyze a Repository</p>
-              <h2 className="display-sm text-ink mb-8">
-                Your contribution<br />starts here.
-              </h2>
-              <AnalysisForm onSubmit={onSubmit} loading={loading} />
-
-              {/* Example repos */}
-              <div className="mt-6">
-                <p className="eyebrow mb-3">Try with</p>
-                <div className="flex flex-wrap gap-2">
-                  {EXAMPLE_REPOS.map((repo) => (
-                    <button
-                      key={repo}
-                      type="button"
-                      disabled={loading}
-                      onClick={() => {
-                        onSubmit({
-                          repoUrl: `https://github.com/${repo}`,
-                          contributor: {
-                            level: 'beginner',
-                            skills: ['JavaScript', 'TypeScript', 'React'],
-                            goal: 'first-pr',
-                            preferredContributionType: 'any',
-                          },
-                          options: {
-                            maxIssues: 20,
-                            includeAiRoadmap: true,
-                            includePrDraft: true,
-                            includeSetupAnalysis: true,
-                          },
-                        });
-                      }}
-                      className="btn-outline-sm"
-                    >
-                      {repo}
-                      <ArrowRight size={10} className="text-body-mid" />
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Features sidebar */}
-            <div className="space-y-6 animate-fade-up animation-delay-400">
-              <div>
-                <p className="eyebrow mb-6">What you get</p>
-                <div className="space-y-4">
-                  {FEATURES.map((f) => (
-                    <div
-                      key={f.title}
-                      className="card-sm flex items-start gap-4 hover:border-body-mid transition-colors"
-                    >
-                      <div className="flex items-center justify-center w-8 h-8 rounded-[6px] bg-canvas-soft border border-hairline shrink-0">
-                        {f.icon}
-                      </div>
-                      <div>
-                        <h3 className="text-ink text-sm font-medium mb-1">{f.title}</h3>
-                        <p className="text-body-mid text-sm leading-5">{f.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* How it works */}
-              <div className="card-sm">
-                <p className="eyebrow mb-4">How it works</p>
-                <div className="space-y-3">
-                  {[
-                    ['01', 'Paste a GitHub repo URL'],
-                    ['02', 'Tell us your skills & goal'],
-                    ['03', 'AI analyses issues & the codebase'],
-                    ['04', 'Get your personalised roadmap'],
-                  ].map(([n, step]) => (
-                    <div key={n} className="flex items-center gap-3">
-                      <span className="font-mono text-[11px] text-accent-sunset w-5 shrink-0">
-                        {n}
-                      </span>
-                      <span className="text-body text-sm">{step}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <div className="hairline-divider" />
-
-        {/* Bottom CTA band */}
-        <section className="max-w-6xl mx-auto px-6 py-20 text-center">
-          <p className="eyebrow mb-4">Open Source for Everyone</p>
-          <h2 className="display-md text-ink mb-4">
+        {/* ── Bottom CTA ───────────────────────────────────────────── */}
+        <section className="max-w-6xl mx-auto px-6 py-24 text-center">
+          <p className="eyebrow mb-5">Open Source for Everyone</p>
+          <h2 className="display-md text-ink mb-5">
             Every expert was once a beginner.
           </h2>
-          <p className="text-body text-lg leading-7 max-w-xl mx-auto">
-            OpenPath removes the guesswork from your first open source contribution. No more staring at a 40k-line codebase wondering where to start.
+          <p className="text-body text-lg leading-7 max-w-lg mx-auto mb-10">
+            OpenPath removes the guesswork from your first open source contribution.
+            No more staring at a 40k-line codebase wondering where to start.
           </p>
+          <Link
+            to="/analyze"
+            className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-ink text-canvas text-sm font-medium transition-all duration-200 hover:bg-ink-hover"
+          >
+            Analyze a Repository
+            <ArrowRight size={15} />
+          </Link>
         </section>
       </main>
 

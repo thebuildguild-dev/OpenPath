@@ -15,7 +15,7 @@ function CopyButton({ text }: { text: string }) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // fallback: do nothing
+      // fallback
     }
   };
 
@@ -38,8 +38,8 @@ function CopyButton({ text }: { text: string }) {
 
 function CodeBlock({ content, label }: { content: string; label: string }) {
   return (
-    <div className="bg-canvas-soft border border-hairline rounded-[8px] overflow-hidden">
-      <div className="flex items-center justify-between px-4 py-2 border-b border-hairline">
+    <div className="bg-canvas-soft rounded-[8px] overflow-hidden">
+      <div className="flex items-center justify-between px-4 py-2.5 border-b border-hairline">
         <span className="eyebrow">{label}</span>
         <CopyButton text={content} />
       </div>
@@ -55,7 +55,7 @@ export default function PRDraftCard({ issue }: PRDraftCardProps) {
     <div className="card">
       {/* Header */}
       <div className="flex items-start gap-4 mb-6">
-        <div className="flex items-center justify-center w-10 h-10 rounded-[8px] bg-accent-dusk/15 border border-accent-dusk/30 shrink-0">
+        <div className="flex items-center justify-center w-10 h-10 rounded-[8px] bg-accent-dusk/15 shrink-0">
           <GitPullRequest size={18} className="text-accent-twilight" />
         </div>
         <div>
@@ -72,7 +72,7 @@ export default function PRDraftCard({ issue }: PRDraftCardProps) {
       {/* PR Title */}
       <div className="mb-5">
         <p className="eyebrow mb-3">PR Title</p>
-        <div className="flex items-center gap-2 bg-canvas-soft border border-hairline rounded-[8px] px-4 py-3">
+        <div className="flex items-center gap-2 bg-canvas-soft rounded-[8px] px-4 py-3">
           <code className="font-mono text-sm text-ink flex-1">{issue.prDraft.title}</code>
           <CopyButton text={issue.prDraft.title} />
         </div>
@@ -92,8 +92,8 @@ export default function PRDraftCard({ issue }: PRDraftCardProps) {
         <p className="text-body-mid text-xs mb-3 leading-5">
           Post this comment on the issue before opening your PR to signal your intent to the maintainers.
         </p>
-        <div className="bg-canvas-soft border border-hairline rounded-[8px] overflow-hidden">
-          <div className="flex items-center justify-between px-4 py-2 border-b border-hairline">
+        <div className="bg-canvas-soft rounded-[8px] overflow-hidden">
+          <div className="flex items-center justify-between px-4 py-2.5 border-b border-hairline">
             <span className="eyebrow">Comment</span>
             <CopyButton text={issue.maintainerComment} />
           </div>

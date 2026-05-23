@@ -1,4 +1,5 @@
 import { ArrowLeft, ExternalLink } from "lucide-react";
+import { Link } from "react-router-dom";
 import GithubIcon from "./GithubIcon";
 
 interface NavBarProps {
@@ -19,15 +20,12 @@ export default function NavBar({ repoUrl, repoName, onBack }: NavBarProps) {
               Back
             </button>
           )}
-          <button
-            onClick={() => onBack?.()}
-            className="flex items-center gap-2 group"
-          >
+          <Link to="/" className="flex items-center gap-2 group">
             <img src="/logo.svg" alt="OpenPath" width={20} height={20} />
             <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-ink group-hover:text-body transition-colors">
               OpenPath
             </span>
-          </button>
+          </Link>
         </div>
 
         {/* Right */}

@@ -44,12 +44,14 @@
 }
 
 @layer components {
+  /* ── Eyebrow label ─────────────────────────────────────── */
   .eyebrow {
     @apply font-mono text-xs uppercase tracking-[0.1em] text-body-mid;
   }
 
+  /* ── Buttons ────────────────────────────────────────────── */
   .btn-outline {
-    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full border border-hairline text-ink text-sm leading-5 transition-all duration-200 hover:bg-canvas-soft hover:border-body-mid cursor-pointer;
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full bg-canvas-soft text-ink text-sm leading-5 transition-all duration-200 hover:bg-canvas-mid cursor-pointer;
   }
 
   .btn-primary {
@@ -57,21 +59,24 @@
   }
 
   .btn-outline-sm {
-    @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-hairline text-ink text-xs leading-4 transition-all duration-200 hover:bg-canvas-soft cursor-pointer;
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-canvas-soft text-ink text-xs leading-4 transition-all duration-200 hover:bg-canvas-mid cursor-pointer;
   }
 
+  /* ── Cards — background only, no border ────────────────── */
   .card {
-    @apply bg-canvas-card border border-hairline rounded-[8px] p-6;
+    @apply bg-canvas-card rounded-[10px] p-6;
   }
 
   .card-sm {
-    @apply bg-canvas-card border border-hairline rounded-[8px] p-4;
+    @apply bg-canvas-card rounded-[10px] p-4;
   }
 
+  /* ── Form inputs — borderless ───────────────────────────── */
   .text-input {
-    @apply w-full bg-canvas-soft border border-hairline rounded-[8px] px-4 py-3 text-ink text-sm placeholder:text-body-mid outline-none focus:border-body-mid transition-colors;
+    @apply w-full bg-canvas-soft rounded-[8px] px-4 py-3 text-ink text-sm placeholder:text-body-mid outline-none transition-colors focus:ring-1 focus:ring-canvas-mid;
   }
 
+  /* ── Typography scale ───────────────────────────────────── */
   .display-xl {
     font-size: clamp(48px, 8vw, 96px);
     font-weight: 400;
@@ -100,6 +105,7 @@
     letter-spacing: -0.02em;
   }
 
+  /* ── Gradient ───────────────────────────────────────────── */
   .gradient-text {
     background: linear-gradient(135deg, #ff7a17 0%, #ffc285 40%, #c4b5fd 70%, #7c3aed 100%);
     -webkit-background-clip: text;
@@ -107,41 +113,31 @@
     background-clip: text;
   }
 
+  /* ── Structural dividers (kept as hairlines) ────────────── */
   .hairline-divider {
     @apply border-t border-hairline;
   }
 
-  .score-ring-high {
-    stroke: #ff7a17;
-  }
+  /* ── Score ring colors ──────────────────────────────────── */
+  .score-ring-high   { stroke: #ff7a17; }
+  .score-ring-medium { stroke: #ffc285; }
+  .score-ring-low    { stroke: #7d8187; }
 
-  .score-ring-medium {
-    stroke: #ffc285;
-  }
-
-  .score-ring-low {
-    stroke: #7d8187;
+  /* ── Inner data rows — no border ────────────────────────── */
+  .data-row {
+    @apply bg-canvas-soft rounded-[6px] px-3 py-2.5;
   }
 }
 
 @layer utilities {
-  .animation-delay-100 {
-    animation-delay: 100ms;
-  }
-  .animation-delay-200 {
-    animation-delay: 200ms;
-  }
-  .animation-delay-300 {
-    animation-delay: 300ms;
-  }
-  .animation-delay-400 {
-    animation-delay: 400ms;
-  }
-  .animation-delay-500 {
-    animation-delay: 500ms;
-  }
-
-  .opacity-0-init {
-    opacity: 0;
+  .animation-delay-100 { animation-delay: 100ms; }
+  .animation-delay-200 { animation-delay: 200ms; }
+  .animation-delay-300 { animation-delay: 300ms; }
+  .animation-delay-400 { animation-delay: 400ms; }
+  .animation-delay-500 { animation-delay: 500ms; }
+  .opacity-0-init { opacity: 0; }
+  .scrollbar-none {
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
   }
 }

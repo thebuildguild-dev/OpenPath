@@ -15,10 +15,10 @@ interface ResultsPageProps {
 }
 
 const TABS = [
-  { id: 'issues', label: 'Issues', icon: <LayoutList size={14} /> },
-  { id: 'roadmap', label: 'Roadmap', icon: <Map size={14} /> },
-  { id: 'pr', label: 'PR Draft', icon: <GitPullRequest size={14} /> },
-  { id: 'setup', label: 'Setup', icon: <Settings2 size={14} /> },
+  { id: 'issues',  label: 'Issues',   icon: <LayoutList size={14} /> },
+  { id: 'roadmap', label: 'Roadmap',  icon: <Map size={14} /> },
+  { id: 'pr',      label: 'PR Draft', icon: <GitPullRequest size={14} /> },
+  { id: 'setup',   label: 'Setup',    icon: <Settings2 size={14} /> },
 ] as const;
 
 type TabId = (typeof TABS)[number]['id'];
@@ -37,21 +37,17 @@ export default function ResultsPage({ data, onBack }: ResultsPageProps) {
 
   return (
     <div className="min-h-screen flex flex-col bg-canvas">
-      <NavBar
-        repoUrl={repo.url}
-        repoName={repo.fullName}
-        onBack={onBack}
-      />
+      <NavBar repoUrl={repo.url} repoName={repo.fullName} onBack={onBack} />
 
       {/* Repo header */}
       <RepoHeader repo={repo} repoSummary={repoSummary} />
 
-      {/* Best issue banner */}
+      {/* Best issue banner — no box outline, use bg */}
       <div className="border-b border-hairline bg-canvas-soft">
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center w-7 h-7 rounded-full bg-accent-sunset/15 border border-accent-sunset/30">
+              <div className="flex items-center justify-center w-7 h-7 rounded-full bg-accent-sunset/15">
                 <Trophy size={13} className="text-accent-sunset" />
               </div>
               <div>
@@ -111,40 +107,31 @@ export default function ResultsPage({ data, onBack }: ResultsPageProps) {
                     {recommendedIssues.length} issues matched
                   </h2>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="font-mono text-[11px] text-body-mid">
-                    Ranked by fit
-                  </span>
-                </div>
+                <span className="font-mono text-[11px] text-body-mid">Ranked by fit</span>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {recommendedIssues.map((issue) => (
-                  <IssueCard
-                    key={issue.id}
-                    issue={issue}
-                    isTop={issue.number === bestIssue.number}
-                  />
+                  <IssueCard key={issue.id} issue={issue} isTop={issue.number === bestIssue.number} />
                 ))}
               </div>
 
               {/* Files to avoid */}
-              <div className="mt-8 card-sm">
-                <p className="eyebrow mb-3">Files to Avoid</p>
-                <p className="text-body-mid text-sm mb-3">
-                  Stay away from these areas for your first contribution — they carry high risk of breaking things.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {overallGuidance.filesToAvoid.map((f) => (
-                    <code
-                      key={f}
-                      className="font-mono text-xs text-red-400 bg-red-400/10 border border-red-400/20 px-2.5 py-1 rounded"
-                    >
-                      {f}
-                    </code>
-                  ))}
+              {overallGuidance.filesToAvoid.length > 0 && (
+                <div className="mt-8 bg-canvas-card rounded-[10px] p-5">
+                  <p className="eyebrow mb-2">Files to Avoid</p>
+                  <p className="text-body-mid text-sm mb-3">
+                    Stay away from these areas for your first contribution — they carry high risk.
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {overallGuidance.filesToAvoid.map((f) => (
+                      <code key={f} className="font-mono text-xs text-red-400 bg-red-400/10 px-2.5 py-1 rounded">
+                        {f}
+                      </code>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           )}
 

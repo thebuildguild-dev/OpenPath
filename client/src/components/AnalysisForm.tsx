@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Loader2, ArrowRight, ChevronDown } from "lucide-react";
+import { useState, useRef } from "react";
+import { Loader2, ArrowRight, ChevronDown, Plus, X } from "lucide-react";
 import GithubIcon from "./GithubIcon";
 import clsx from "clsx";
 import type {
@@ -14,7 +14,7 @@ interface AnalysisFormProps {
   loading: boolean;
 }
 
-const SKILL_OPTIONS = [
+const PRESET_SKILLS = [
   "JavaScript",
   "TypeScript",
   "React",
@@ -40,38 +40,26 @@ const LEVEL_OPTIONS: {
   label: string;
   desc: string;
 }[] = [
-  {
-    value: "beginner",
-    label: "Beginner",
-    desc: "New to open source or the language",
-  },
-  {
-    value: "intermediate",
-    label: "Intermediate",
-    desc: "Some experience, ready for real issues",
-  },
-  {
-    value: "advanced",
-    label: "Advanced",
-    desc: "Comfortable with the codebase",
-  },
+  { value: "beginner",     label: "Beginner",     desc: "New to open source or the language" },
+  { value: "intermediate", label: "Intermediate", desc: "Some experience, ready for real issues" },
+  { value: "advanced",     label: "Advanced",     desc: "Comfortable with the codebase" },
 ];
 
 const GOAL_OPTIONS: { value: ContributionGoal; label: string }[] = [
-  { value: "first-pr", label: "Land My First PR" },
-  { value: "bug-fix", label: "Fix a Bug" },
-  { value: "docs", label: "Improve Documentation" },
-  { value: "feature", label: "Build a Feature" },
-  { value: "testing", label: "Add Tests" },
-  { value: "explore", label: "Explore the Codebase" },
+  { value: "first-pr",  label: "Land My First PR" },
+  { value: "bug-fix",   label: "Fix a Bug" },
+  { value: "docs",      label: "Improve Documentation" },
+  { value: "feature",   label: "Build a Feature" },
+  { value: "testing",   label: "Add Tests" },
+  { value: "explore",   label: "Explore the Codebase" },
 ];
 
 const TYPE_OPTIONS: { value: ContributionType; label: string }[] = [
-  { value: "any", label: "Any" },
-  { value: "code", label: "Code" },
-  { value: "docs", label: "Docs" },
+  { value: "any",     label: "Any" },
+  { value: "code",    label: "Code" },
+  { value: "docs",    label: "Docs" },
   { value: "testing", label: "Testing" },
-  { value: "ui", label: "UI" },
+  { value: "ui",      label: "UI" },
   { value: "backend", label: "Backend" },
 ];
 
@@ -116,22 +104,44 @@ function SelectField<T extends string>({
 }
 
 export default function AnalysisForm({ onSubmit, loading }: AnalysisFormProps) {
-  const [repoUrl, setRepoUrl] = useState("");
-  const [name, setName] = useState("");
-  const [level, setLevel] = useState<ContributorLevel>("beginner");
-  const [skills, setSkills] = useState<string[]>([
-    "JavaScript",
-    "React",
-    "CSS",
-  ]);
-  const [goal, setGoal] = useState<ContributionGoal>("first-pr");
-  const [type, setType] = useState<ContributionType>("any");
+  const [repoUrl, setRepoUrl]   = useState("");
+  const [name, setName]         = useState("");
+  const [level, setLevel]       = useState<ContributorLevel>("beginner");
+  const [skills, setSkills]     = useState<string[]>(["JavaScript", "React", "CSS"]);
+  const [goal, setGoal]         = useState<ContributionGoal>("first-pr");
+  const [type, setType]         = useState<ContributionType>("any");
   const [urlError, setUrlError] = useState("");
+  const [customInput, setCustomInput] = useState("");
+  const customInputRef = useRef<HTMLInputElement>(null);
 
-  const toggleSkill = (skill: string) =>
+  // Split into preset and custom
+  const customSkills = skills.filter((s) => !PRESET_SKILLS.includes(s));
+
+  const togglePreset = (skill: string) =>
     setSkills((prev) =>
-      prev.includes(skill) ? prev.filter((s) => s !== skill) : [...prev, skill],
+      prev.includes(skill) ? prev.filter((s) => s !== skill) : [...prev, skill]
     );
+
+  const removeSkill = (skill: string) =>
+    setSkills((prev) => prev.filter((s) => s !== skill));
+
+  const addCustomSkill = () => {
+    const trimmed = customInput.trim();
+    if (!trimmed) return;
+    const normalised = trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
+    if (!skills.includes(normalised)) {
+      setSkills((prev) => [...prev, normalised]);
+    }
+    setCustomInput("");
+    customInputRef.current?.focus();
+  };
+
+  const handleCustomKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      addCustomSkill();
+    }
+  };
 
   const validateUrl = (url: string) => {
     const trimmed = url.trim();
@@ -152,22 +162,17 @@ export default function AnalysisForm({ onSubmit, loading }: AnalysisFormProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const err = validateUrl(repoUrl);
-    if (err) {
-      setUrlError(err);
-      return;
-    }
+    if (err) { setUrlError(err); return; }
     setUrlError("");
 
-    if (skills.length === 0) {
-      skills.push("JavaScript");
-    }
+    const finalSkills = skills.length > 0 ? skills : ["JavaScript"];
 
     onSubmit({
       repoUrl: repoUrl.trim(),
       contributor: {
         name: name.trim() || undefined,
         level,
-        skills,
+        skills: finalSkills,
         goal,
         preferredContributionType: type,
       },
@@ -181,8 +186,8 @@ export default function AnalysisForm({ onSubmit, loading }: AnalysisFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      {/* Repo URL */}
+    <form onSubmit={handleSubmit} className="space-y-7">
+      {/* ── Repo URL ─────────────────────────────────────── */}
       <div>
         <label className="eyebrow block mb-2">GitHub Repository URL</label>
         <div className="relative">
@@ -192,14 +197,11 @@ export default function AnalysisForm({ onSubmit, loading }: AnalysisFormProps) {
           <input
             type="url"
             value={repoUrl}
-            onChange={(e) => {
-              setRepoUrl(e.target.value);
-              if (urlError) setUrlError("");
-            }}
+            onChange={(e) => { setRepoUrl(e.target.value); if (urlError) setUrlError(""); }}
             placeholder="https://github.com/owner/repository"
             className={clsx(
               "text-input pl-10",
-              urlError && "border-red-400/60 focus:border-red-400",
+              urlError && "ring-1 ring-red-400/50"
             )}
             disabled={loading}
             autoComplete="url"
@@ -209,7 +211,7 @@ export default function AnalysisForm({ onSubmit, loading }: AnalysisFormProps) {
         {urlError && <p className="text-red-400 text-xs mt-1.5">{urlError}</p>}
       </div>
 
-      {/* Name (optional) */}
+      {/* ── Name (optional) ──────────────────────────────── */}
       <div>
         <label className="eyebrow block mb-2">
           Your Name{" "}
@@ -225,44 +227,36 @@ export default function AnalysisForm({ onSubmit, loading }: AnalysisFormProps) {
         />
       </div>
 
-      {/* Level + Goal in a row */}
+      {/* ── Level + Goal ─────────────────────────────────── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <SelectField
-          label="Experience Level"
-          value={level}
-          options={LEVEL_OPTIONS}
-          onChange={setLevel}
-        />
-        <SelectField
-          label="Your Goal"
-          value={goal}
-          options={GOAL_OPTIONS}
-          onChange={setGoal}
-        />
+        <SelectField label="Experience Level" value={level} options={LEVEL_OPTIONS} onChange={setLevel} />
+        <SelectField label="Your Goal"        value={goal}  options={GOAL_OPTIONS}  onChange={setGoal}  />
       </div>
 
-      {/* Skills */}
+      {/* ── Skills ───────────────────────────────────────── */}
       <div>
-        <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center justify-between mb-3">
           <label className="eyebrow">Your Skills</label>
           <span className="font-mono text-[10px] text-body-mid">
             {skills.length} selected
           </span>
         </div>
+
+        {/* Preset skill chips */}
         <div className="flex flex-wrap gap-2">
-          {SKILL_OPTIONS.map((skill) => {
+          {PRESET_SKILLS.map((skill) => {
             const active = skills.includes(skill);
             return (
               <button
                 key={skill}
                 type="button"
-                onClick={() => toggleSkill(skill)}
+                onClick={() => togglePreset(skill)}
                 disabled={loading}
                 className={clsx(
-                  "px-3 py-1.5 rounded-full text-xs border transition-all duration-150 cursor-pointer",
+                  "px-3 py-1.5 rounded-full text-xs transition-all duration-150 cursor-pointer",
                   active
-                    ? "bg-accent-sunset/15 border-accent-sunset/40 text-accent-sunset-soft"
-                    : "bg-canvas-soft border-hairline text-body-mid hover:border-body-mid hover:text-body",
+                    ? "bg-accent-sunset/15 text-accent-sunset-soft"
+                    : "bg-canvas-soft text-body-mid hover:text-body hover:bg-canvas-mid"
                 )}
               >
                 {skill}
@@ -270,11 +264,56 @@ export default function AnalysisForm({ onSubmit, loading }: AnalysisFormProps) {
             );
           })}
         </div>
+
+        {/* Custom skills (added by user) */}
+        {customSkills.length > 0 && (
+          <div className="flex flex-wrap gap-2 mt-3">
+            {customSkills.map((skill) => (
+              <span
+                key={skill}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs bg-accent-dusk/15 text-accent-twilight"
+              >
+                {skill}
+                <button
+                  type="button"
+                  onClick={() => removeSkill(skill)}
+                  className="text-accent-twilight/60 hover:text-accent-twilight transition-colors"
+                  aria-label={`Remove ${skill}`}
+                >
+                  <X size={10} />
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* Custom skill input */}
+        <div className="flex items-center gap-2 mt-3">
+          <input
+            ref={customInputRef}
+            type="text"
+            value={customInput}
+            onChange={(e) => setCustomInput(e.target.value)}
+            onKeyDown={handleCustomKeyDown}
+            placeholder="Add a custom skill…"
+            className="text-input flex-1 py-2 text-xs"
+            disabled={loading}
+          />
+          <button
+            type="button"
+            onClick={addCustomSkill}
+            disabled={loading || !customInput.trim()}
+            className="flex items-center justify-center w-9 h-9 rounded-full bg-canvas-soft text-body-mid hover:text-ink hover:bg-canvas-mid disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer"
+            aria-label="Add custom skill"
+          >
+            <Plus size={14} />
+          </button>
+        </div>
       </div>
 
-      {/* Contribution type */}
+      {/* ── Contribution type ────────────────────────────── */}
       <div>
-        <label className="eyebrow block mb-2">
+        <label className="eyebrow block mb-3">
           Preferred Contribution Type
         </label>
         <div className="flex flex-wrap gap-2">
@@ -287,10 +326,10 @@ export default function AnalysisForm({ onSubmit, loading }: AnalysisFormProps) {
                 onClick={() => setType(opt.value)}
                 disabled={loading}
                 className={clsx(
-                  "px-3 py-1.5 rounded-full text-xs border transition-all duration-150 cursor-pointer",
+                  "px-3 py-1.5 rounded-full text-xs transition-all duration-150 cursor-pointer",
                   active
-                    ? "bg-ink text-canvas border-ink"
-                    : "bg-canvas-soft border-hairline text-body-mid hover:border-body-mid hover:text-body",
+                    ? "bg-ink text-canvas"
+                    : "bg-canvas-soft text-body-mid hover:text-body hover:bg-canvas-mid"
                 )}
               >
                 {opt.label}
@@ -300,15 +339,15 @@ export default function AnalysisForm({ onSubmit, loading }: AnalysisFormProps) {
         </div>
       </div>
 
-      {/* Submit */}
+      {/* ── Submit ───────────────────────────────────────── */}
       <button
         type="submit"
         disabled={loading}
         className={clsx(
           "w-full flex items-center justify-center gap-2.5 py-3.5 rounded-full text-sm font-medium transition-all duration-200",
           loading
-            ? "bg-canvas-soft border border-hairline text-body-mid cursor-not-allowed"
-            : "bg-ink text-canvas hover:bg-ink-hover cursor-pointer",
+            ? "bg-canvas-soft text-body-mid cursor-not-allowed"
+            : "bg-ink text-canvas hover:bg-ink-hover cursor-pointer"
         )}
       >
         {loading ? (
