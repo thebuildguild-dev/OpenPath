@@ -2,6 +2,8 @@
  * Prompt builder for the PR Coach Agent.
  */
 
+import { sanitizeForPrompt } from '../utils/sanitize.js';
+
 export function buildPrCoachPrompt({ repo, issue, patchStrategy, testingChecklist }) {
   const steps = (patchStrategy || []).map((s, i) => `  ${i + 1}. ${s}`).join('\n');
   const tests = (testingChecklist || []).map((t) => `  ${t}`).join('\n');
@@ -12,6 +14,11 @@ Repository: ${repo?.fullName || 'unknown'}
 Issue #${issue.number}: "${issue.title}"
 Labels: ${(issue.labels || []).join(', ') || 'none'}
 Issue URL: ${issue.url || '#'}
+
+Body excerpt:
+"""
+${sanitizeForPrompt(issue.body, 400)}
+"""
 
 Patch strategy:
 ${steps || '  (no steps provided)'}

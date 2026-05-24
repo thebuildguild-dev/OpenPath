@@ -2,6 +2,8 @@
  * Prompt builder for the Patch Strategy Agent.
  */
 
+import { sanitizeForPrompt } from '../utils/sanitize.js';
+
 export function buildPatchStrategyPrompt({ repo, issue, likelyFiles, riskLevel, contributor, setupAnalysis }) {
   const fileList = (likelyFiles || [])
     .map((f) => `  - ${f.path} (confidence: ${f.confidence}%) — ${f.reason}`)
@@ -23,7 +25,7 @@ Labels: ${(issue.labels || []).join(', ') || 'none'}
 Risk level: ${riskLevel || 'medium'}
 Body:
 """
-${(issue.body || '').slice(0, 500)}
+${sanitizeForPrompt(issue.body, 500)}
 """
 
 Contributor:

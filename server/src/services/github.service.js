@@ -105,7 +105,14 @@ export async function getTopLevelContents(owner, repo) {
 export async function getFileIfExists(owner, repo, path) {
   const data = await get(`${GITHUB_API}/repos/${owner}/${repo}/contents/${path}`);
   if (!data?.content) return null;
-  return decodeBase64(data.content);
+  const content = decodeBase64(data.content);
+  // Simple secret detection: redact or refuse to return files that look like secrets
+  const secretPatterns = /API[_-]?KEY|GITHUB[_-]?TOKEN|PASSWORD|SECRET|PRIVATE[_ ]?KEY|BEGIN RSA|BEGIN PRIVATE KEY/i;
+  if (secretPatterns.test(content)) {
+    console.warn(`[GitHub] Redacted file ${owner}/${repo}/${path} due to suspected secrets`);
+    return null;
+  }
+  return content;
 }
 
 export async function getRepoLanguages(owner, repo) {

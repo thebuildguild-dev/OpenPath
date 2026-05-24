@@ -3,11 +3,13 @@
  * Ask Groq to enrich the rule-based repo summary with a natural language description.
  */
 
+import { sanitizeForPrompt } from '../utils/sanitize.js';
+
 export function buildRepoScoutPrompt({ repoMetadata, readme, languages, topLevelContents, ruleBasedResult }) {
   const folderNames = topLevelContents.filter((f) => f.type === 'dir').map((f) => f.name);
   const fileNames = topLevelContents.filter((f) => f.type === 'file').map((f) => f.name);
   const langList = Object.keys(languages || {}).join(', ') || 'unknown';
-  const readmeSnippet = (readme || '').slice(0, 800);
+  const readmeSnippet = sanitizeForPrompt(readme, 800);
 
   return `You are OpenPath's Repo Scout agent. Analyze this GitHub repository and return a structured summary.
 

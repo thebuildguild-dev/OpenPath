@@ -1,4 +1,5 @@
 import { callGroq } from '../utils/groq.js';
+import { safeJsonParse } from '../utils/safeJsonParse.js';
 
 const DEFAULT_SYSTEM_PROMPT =
   'You are OpenPath, an AI mentor that analyzes GitHub repositories and creates safe contribution roadmaps.';
@@ -29,16 +30,16 @@ export async function generateJson(prompt, options = {}) {
   );
 
   const cleaned = stripFences(result.text);
-
-  try {
-    return JSON.parse(cleaned);
-  } catch {
+  const parsed = safeJsonParse(cleaned, null);
+  if (parsed === null) {
     const match = cleaned.match(/(\{[\s\S]*\}|\[[\s\S]*\])/);
     if (match) {
-      return JSON.parse(match[1]);
+      const alt = safeJsonParse(match[1], null);
+      if (alt !== null) return alt;
     }
     throw new Error(`Groq returned non-JSON response from ${result.model}: ${cleaned.slice(0, 200)}`);
   }
+  return parsed;
 }
 
 export async function generateJsonSafe(prompt, fallback, timeoutMs = 30000, options = {}) {
